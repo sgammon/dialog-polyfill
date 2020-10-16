@@ -2,12 +2,9 @@
 
 dialog {
   position: absolute;
-  left: 0; right: 0;
-  width: -moz-fit-content;
-  width: -webkit-fit-content;
+  left: 0;
+  right: 0;
   width: fit-content;
-  height: -moz-fit-content;
-  height: -webkit-fit-content;
   height: fit-content;
   margin: auto;
   border: solid;
