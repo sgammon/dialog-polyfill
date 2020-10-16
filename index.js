@@ -2,18 +2,6 @@
 goog.module('third_party.dialogPolyfill');
 
 
-// nb. This is for IE10 and lower _only_.
-var supportCustomEvent = window.CustomEvent;
-if (!supportCustomEvent || typeof supportCustomEvent === 'object') {
-  supportCustomEvent = function CustomEvent(event, x) {
-    x = x || {};
-    var ev = document.createEvent('CustomEvent');
-    ev.initCustomEvent(event, !!x.bubbles, !!x.cancelable, x.detail || null);
-    return ev;
-  };
-  supportCustomEvent.prototype = window.Event.prototype;
-}
-
 /**
  * Dispatches the passed event to both an "on<type>" handler as well as via the
  * normal dispatch operation. Does not bubble.
@@ -151,7 +139,7 @@ function findFocusableElementWithin(hostElement) {
 /**
  * Determines if an element is attached to the DOM.
  * @param {Element} element to check
- * @return {Boolean} whether the element is in DOM
+ * @return {!boolean} whether the element is in DOM
  */
 function isConnected(element) {
   return element.isConnected || document.body.contains(element);
@@ -403,12 +391,25 @@ dialogPolyfillInfo.prototype = /** @type {HTMLDialogElement.prototype} */ ({
 
 var dialogPolyfill = {};
 
+
+/**
+ * Reposition Dialog initialized in the UI.
+ *
+ * @param {!Element} element DOM element.
+ */
 dialogPolyfill.reposition = function(element) {
   var scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
   var topValue = scrollTop + (window.innerHeight - element.offsetHeight) / 2;
   element.style.top = Math.max(scrollTop, topValue) + 'px';
 };
 
+
+/**
+ * Check if the inline position is set via stylesheet.
+ *
+ * @param {!Element} element DOM element.
+ * @return {!boolean} Whether the inline position is set via stylesheet.
+ */
 dialogPolyfill.isInlinePositionSetByStylesheet = function(element) {
   for (var i = 0; i < document.styleSheets.length; ++i) {
     var styleSheet = document.styleSheets[i];
@@ -438,6 +439,13 @@ dialogPolyfill.isInlinePositionSetByStylesheet = function(element) {
   return false;
 };
 
+
+/**
+ * Check whether the dialog polyfill needs centering.
+ *
+ * @param {!Element} dialog DOM element dialog.
+ * @return {!boolean} Whether the dialog needs centering.
+ */
 dialogPolyfill.needsCentering = function(dialog) {
   var computedStyle = window.getComputedStyle(dialog);
   if (computedStyle.position !== 'absolute') {
