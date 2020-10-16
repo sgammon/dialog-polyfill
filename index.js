@@ -380,7 +380,7 @@ dialogPolyfillInfo.prototype = /** @type {HTMLDialogElement.prototype} */ ({
     }
 
     // Triggering "close" event for any attached listeners on the <dialog>.
-    var closeEvent = new supportCustomEvent('close', {
+    var closeEvent = new CustomEvent('close', {
       bubbles: false,
       cancelable: false
     });
@@ -641,7 +641,7 @@ dialogPolyfill.DialogManager.prototype.handleKey_ = function(event) {
   if (event.keyCode === 27) {
     event.preventDefault();
     event.stopPropagation();
-    var cancelEvent = new supportCustomEvent('cancel', {
+    var cancelEvent = new CustomEvent('cancel', {
       bubbles: false,
       cancelable: true
     });
