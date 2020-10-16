@@ -48,7 +48,7 @@ function createsStackingContext(el) {
 /**
  * Finds the nearest <dialog> from the passed element.
  *
- * @param {Element} el to search from
+ * @param {EventTarget} el to search from
  * @return {HTMLDialogElement} dialog found
  */
 function findNearestDialog(el) {
