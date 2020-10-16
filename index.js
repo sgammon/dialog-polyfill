@@ -149,7 +149,7 @@ function isConnected(element) {
  * @param {!HTMLDialogElement} dialog to upgrade
  * @constructor
  */
-function dialogPolyfillInfo(dialog) {
+function DialogPolyfillInfo(dialog) {
   this.dialog_ = dialog;
   this.replacedStyleTop_ = false;
   this.openAsModal_ = false;
@@ -206,8 +206,11 @@ function dialogPolyfillInfo(dialog) {
   this.backdrop_.addEventListener('click'    , this.backdropMouseEvent_.bind(this));
 }
 
-dialogPolyfillInfo.prototype = /** @type {HTMLDialogElement.prototype} */ ({
-
+DialogPolyfillInfo.prototype = /** @type {HTMLDialogElement.prototype} */ ({
+  /**
+   * @public
+   * @return {!HTMLDialogElement} Dialog element.
+   */
   get dialog() {
     return this.dialog_;
   },
@@ -216,6 +219,8 @@ dialogPolyfillInfo.prototype = /** @type {HTMLDialogElement.prototype} */ ({
    * Maybe remove this dialog from the modal top layer. This is called when
    * a modal dialog may no longer be tenable, e.g., when the dialog is no
    * longer open or is no longer part of the DOM.
+   *
+   * @public
    */
   maybeHideModal: function() {
     if (this.dialog_.hasAttribute('open') && isConnected(this.dialog_)) { return; }
@@ -224,6 +229,8 @@ dialogPolyfillInfo.prototype = /** @type {HTMLDialogElement.prototype} */ ({
 
   /**
    * Remove this dialog from the modal top layer, leaving it as a non-modal.
+   *
+   * @public
    */
   downgradeModal: function() {
     if (!this.openAsModal_) { return; }
@@ -245,6 +252,8 @@ dialogPolyfillInfo.prototype = /** @type {HTMLDialogElement.prototype} */ ({
 
   /**
    * @param {boolean} value whether to open or close this dialog
+   *
+   * @public
    */
   setOpen: function(value) {
     if (value) {
@@ -260,6 +269,7 @@ dialogPolyfillInfo.prototype = /** @type {HTMLDialogElement.prototype} */ ({
    * they were on the dialog itself.
    *
    * @param {!Event} e to redirect
+   * @public
    */
   backdropMouseEvent_: function(e) {
     if (!this.dialog_.hasAttribute('tabindex')) {
@@ -474,7 +484,7 @@ dialogPolyfill.forceRegisterDialog = function(element) {
   if (element.localName !== 'dialog') {
     throw new Error('Failed to register dialog: The element is not a dialog.');
   }
-  new dialogPolyfillInfo(/** @type {!HTMLDialogElement} */ (element));
+  new DialogPolyfillInfo(/** @type {!HTMLDialogElement} */ (element));
 };
 
 /**
@@ -490,7 +500,7 @@ dialogPolyfill.registerDialog = function(element) {
  * @constructor
  */
 dialogPolyfill.DialogManager = function() {
-  /** @type {!Array<!dialogPolyfillInfo>} */
+  /** @type {!Array<!DialogPolyfillInfo>} */
   this.pendingDialogStack = [];
 
   var checkDOM = this.checkDOM_.bind(this);
@@ -578,7 +588,7 @@ dialogPolyfill.DialogManager.prototype.updateStacking = function() {
 };
 
 /**
- * @param {Element} candidate to check if contained or is the top-most modal dialog
+ * @param {EventTarget} candidate to check if contained or is the top-most modal dialog
  * @return {boolean} whether candidate is contained in top dialog
  * @private
  */
@@ -676,7 +686,7 @@ dialogPolyfill.DialogManager.prototype.checkDOM_ = function(removed) {
 };
 
 /**
- * @param {!dialogPolyfillInfo} dpi
+ * @param {!DialogPolyfillInfo} dpi
  * @return {boolean} whether the dialog was allowed
  */
 dialogPolyfill.DialogManager.prototype.pushDialog = function(dpi) {
@@ -692,7 +702,7 @@ dialogPolyfill.DialogManager.prototype.pushDialog = function(dpi) {
 };
 
 /**
- * @param {!dialogPolyfillInfo} dpi
+ * @param {!DialogPolyfillInfo} dpi
  */
 dialogPolyfill.DialogManager.prototype.removeDialog = function(dpi) {
   var index = this.pendingDialogStack.indexOf(dpi);
