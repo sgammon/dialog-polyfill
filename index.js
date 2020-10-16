@@ -521,8 +521,8 @@ dialogPolyfill.DialogManager = function() {
   this.handleKey_ = this.handleKey_.bind(this);
   this.handleFocus_ = this.handleFocus_.bind(this);
 
-  this.zIndexLow_ = 100000;
-  this.zIndexHigh_ = 100000 + 150;
+  this.zIndexLow_ = 800;
+  this.zIndexHigh_ = 800 + 150;
 
   this.forwardTab_ = undefined;
 
