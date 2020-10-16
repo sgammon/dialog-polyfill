@@ -1,3 +1,5 @@
+@provide "polyfill.dialog";
+
 dialog {
   position: absolute;
   left: 0; right: 0;
