@@ -801,4 +801,4 @@ if (window.HTMLDialogElement === undefined) {
 }
 
 
-export default dialogPolyfill;
+exports.dialogPolyfill = dialogPolyfill;
