@@ -634,6 +634,7 @@ dialogPolyfill.DialogManager.prototype.handleFocus_ = function(event) {
  * Handle key events from within the dialog.
  *
  * @param {!Event} event Browser event for key pushes.
+ * @private
  */
 dialogPolyfill.DialogManager.prototype.handleKey_ = function(event) {
   this.forwardTab_ = undefined;
@@ -713,7 +714,6 @@ dialogPolyfill.useValue = null;
  * even if a no dialog is registered, as they deal with <form method="dialog">.
  */
 if (window.HTMLDialogElement === undefined) {
-
   /**
    * If HTMLFormElement translates method="DIALOG" into 'get', then replace the descriptor with
    * one that returns the correct value.
@@ -733,7 +733,10 @@ if (window.HTMLDialogElement === undefined) {
         return realGet.call(this);
       };
       var realSet = methodDescriptor.set;
-      /** @this {HTMLElement} */
+      /**
+       * @this {HTMLElement}
+       * @return {undefined}
+       */
       methodDescriptor.set = function(v) {
         if (typeof v === 'string' && v.toLowerCase() === 'dialog') {
           return this.setAttribute('method', v);
