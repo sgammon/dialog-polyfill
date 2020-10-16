@@ -580,6 +580,7 @@ dialogPolyfill.DialogManager.prototype.updateStacking = function() {
 /**
  * @param {Element} candidate to check if contained or is the top-most modal dialog
  * @return {boolean} whether candidate is contained in top dialog
+ * @private
  */
 dialogPolyfill.DialogManager.prototype.containedByTopDialog_ = function(candidate) {
   while (candidate = findNearestDialog(candidate)) {
@@ -593,6 +594,11 @@ dialogPolyfill.DialogManager.prototype.containedByTopDialog_ = function(candidat
   return false;
 };
 
+/**
+ * @param {!Event} event Browser event for focus.
+ * @private
+ * @return {undefined|!boolean}
+ */
 dialogPolyfill.DialogManager.prototype.handleFocus_ = function(event) {
   var target = event.composedPath ? event.composedPath()[0] : event.target;
 
@@ -624,6 +630,11 @@ dialogPolyfill.DialogManager.prototype.handleFocus_ = function(event) {
   return false;
 };
 
+/**
+ * Handle key events from within the dialog.
+ *
+ * @param {!Event} event Browser event for key pushes.
+ */
 dialogPolyfill.DialogManager.prototype.handleKey_ = function(event) {
   this.forwardTab_ = undefined;
   if (event.keyCode === 27) {
@@ -647,6 +658,7 @@ dialogPolyfill.DialogManager.prototype.handleKey_ = function(event) {
  * removed and immediately readded don't stay modal, they become normal.
  *
  * @param {!Array<!HTMLDialogElement>} removed that have definitely been removed
+ * @private
  */
 dialogPolyfill.DialogManager.prototype.checkDOM_ = function(removed) {
   // This operates on a clone because it may cause it to change. Each change also calls
